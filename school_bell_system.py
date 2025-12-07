@@ -427,9 +427,10 @@ def bell_menu():
                 ringBell(todays_times, today_only=True)
             else:
                 print("No times entered.")
-
-        # 2. Use saved schedule 
+ 
         #Saved Schedules: IF WE ENTERS 0 ITS A BUG WHERE THE LAST Saved Schedu BELL WORKS (EVERY WHERE)
+        #FIXED 
+        # 2. Use saved schedule (FIXED)
         elif choice == "2":
             names = list_schedule_names()
             if not names:
@@ -438,25 +439,38 @@ def bell_menu():
 
             print("\nSaved Schedules:")
             for i, n in enumerate(names):
-                print(f"{i+1}. {n}")
-            try:
-                idx = int(input("Choose: ").strip()) - 1
-                name = names[idx]
-            except:
+                 print(f"{i+1}. {n}") 
+            print("0. Back") 
+
+            choice_idx = input("Choose: ").strip()
+
+            if choice_idx == "0":
+                continue  # safely return to Bell menu
+
+            if not choice_idx.isdigit():
                 print("Invalid choice.")
                 continue
 
+            idx = int(choice_idx)
+
+            if idx < 1 or idx > len(names):
+                print("Invalid choice.")
+                continue
+
+            name = names[idx - 1]  # safe now
+
             times = get_schedule(name)
             print(f"\nSelected schedule: {name}")
-            #IF REMOVED TIME WILL GO (TWO TIMES SAME THING PRINTS)
             print("Times:", times)
+
             if times:
                 print("Starting scheduler... (Ctrl+C to stop)\n")
                 ringBell(times)
             else:
                 print("This schedule has no times.")
 
-        # 3. Edit schedule
+        #Saved Schedules: IF WE ENTERS 0 ITS A BUG WHERE THE LAST Saved Schedu BELL WORKS (EVERY WHERE)
+        # 3. Edit schedule (FIXED)
         elif choice == "3":
             names = list_schedule_names()
             if not names:
@@ -466,12 +480,24 @@ def bell_menu():
             print("\nSchedules:")
             for i, n in enumerate(names):
                 print(f"{i+1}. {n}")
-            try:
-                idx = int(input("Choose: ").strip()) - 1
-                name = names[idx]
-            except:
+            print("0. Back")
+
+            choice_idx = input("Choose: ").strip()
+
+            if choice_idx == "0":
+                continue
+
+            if not choice_idx.isdigit():
                 print("Invalid choice.")
                 continue
+
+            idx = int(choice_idx)
+
+            if idx < 1 or idx > len(names):
+                print("Invalid choice.")
+                continue
+
+            name = names[idx - 1]
 
             print(f"\nEditing '{name}'")
             print("1. Rename schedule")
@@ -527,7 +553,7 @@ def bell_menu():
             update_schedule(name, times)
             print(f"Schedule '{name}' created with times:", times)
 
-        # 5. Delete schedule
+        # 5. Delete schedule (FIXED)
         elif choice == "5":
             names = list_schedule_names()
             if not names:
@@ -537,12 +563,24 @@ def bell_menu():
             print("\nSchedules:")
             for i, n in enumerate(names):
                 print(f"{i+1}. {n}")
-            try:
-                idx = int(input("Choose: ").strip()) - 1
-                name = names[idx]
-            except:
+            print("0. Back")
+
+            choice_idx = input("Choose: ").strip()
+
+            if choice_idx == "0":
+                continue
+
+            if not choice_idx.isdigit():
                 print("Invalid choice.")
                 continue
+
+            idx = int(choice_idx)
+
+            if idx < 1 or idx > len(names):
+                print("Invalid choice.")
+                continue
+
+            name = names[idx - 1]
 
             confirm = input(f"Delete schedule '{name}'? (y/n): ").strip().lower()
             if confirm == "y":
@@ -551,12 +589,6 @@ def bell_menu():
             else:
                 print("Cancelled.")
 
-        elif choice == "0":
-            set_mode("IDLE")
-            return
-
-        else:
-            print("Invalid option.")
 
 
 # -------------------------------------------------------------
