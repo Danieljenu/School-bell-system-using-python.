@@ -128,7 +128,8 @@ def ringBell(schedule_list, audio_file='bell.mp3',
         print("No valid times after parsing. Returning.")
         return
 
-    print("Bell schedule:", sorted(schedule))
+    formatted = [format_time_tuple(h, m) for (h, m) in sorted(schedule)]
+    print("Bell schedule at:", ", ".join(formatted))
     print("Scheduler running... (Ctrl+C to stop)\n")
 
     rung_today = set()
@@ -368,6 +369,23 @@ def settings_menu():
         else:
             print("Invalid choice.\n")
 
+#--------------------------------------------------------------
+#Add a small helper function to format time
+#--------------------------------------------------------------
+
+def format_time_tuple(h, m):
+    suffix = "AM"
+    if h == 0:
+        hour = 12
+    elif h < 12:
+        hour = h
+    elif h == 12:
+        hour = 12
+        suffix = "PM"
+    else:
+        hour = h - 12
+        suffix = "PM"
+    return f"{hour}:{m:02d} {suffix}"
 
 # -------------------------------------------------------------
 # BELL MENU (OPTION 1) - NEW VERSION
@@ -410,7 +428,8 @@ def bell_menu():
             else:
                 print("No times entered.")
 
-        # 2. Use saved schedule
+        # 2. Use saved schedule 
+        #Saved Schedules: IF WE ENTERS 0 ITS A BUG WHERE THE LAST Saved Schedu BELL WORKS
         elif choice == "2":
             names = list_schedule_names()
             if not names:
@@ -429,6 +448,7 @@ def bell_menu():
 
             times = get_schedule(name)
             print(f"\nSelected schedule: {name}")
+            #IF REMOVED TIME WILL GO (TWO TIMES SAME THING PRINTS)
             print("Times:", times)
             if times:
                 print("Starting scheduler... (Ctrl+C to stop)\n")
