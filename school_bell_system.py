@@ -588,7 +588,11 @@ def bell_menu():
                 print("Deleted.")
             else:
                 print("Cancelled.")
-
+        elif choice == "0":
+            set_mode("IDLE")
+            return
+        else:
+            print("Invalid choice.\n")
 
 
 # -------------------------------------------------------------
