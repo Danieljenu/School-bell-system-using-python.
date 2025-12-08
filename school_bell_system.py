@@ -11,6 +11,8 @@ SCHOOL BELL SYSTEM - MENU DRIVEN APPLICATION
 import time
 from datetime import datetime, date
 import pygame
+import sys
+import time
 
 # -------------------------------------------------------------
 # GLOBAL MODE FLAG
@@ -594,6 +596,27 @@ def bell_menu():
         else:
             print("Invalid choice.\n")
 
+# -------------------------------------------------------------
+# Add this typewriter function
+# ------------------------------------------------------------
+def typewriter(text, delay=0.02):
+    """Print characters one by one like typing."""
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    print()
+    
+def load_about_us():
+    try:
+        with open("about_us.txt", "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        return "About Us file (about_us.txt) not found."
+
+
+
+
 
 # -------------------------------------------------------------
 # MAIN MENU
@@ -624,13 +647,11 @@ def main_menu():
             settings_menu()
 
         elif choice == "5":
-            with open("about_us.txt", "r", encoding="utf-8") as f:
-                ABOUT_US_TEXT = f.read()
             print("\n========== ABOUT US ==========\n")
-            print(ABOUT_US_TEXT)
+            about_text = load_about_us()
+            typewriter(about_text, delay=0.01)
             print("\n==============================\n")
             input("Press Enter to go back.")
-
 
         elif choice == "0":
             print("Goodbye!")

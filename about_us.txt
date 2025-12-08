@@ -1,6 +1,4 @@
- ABOUT US
-"""
-🌟 IN LOVING MEMORY OF JYOTHI MA’AM 
+ 🌟 IN LOVING MEMORY OF JYOTHI MA’AM 
 
 This project carries the name “Jyoti” for a reason far deeper than technology.
 It is a tribute to our beloved Vice-Principal, Mrs. Jyothi Suresh , who passed away.
@@ -73,4 +71,3 @@ and supported by wonderful people.
 
 This is our story.
 
-"""
