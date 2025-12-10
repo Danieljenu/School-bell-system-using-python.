@@ -13,6 +13,7 @@ from datetime import datetime, date
 import pygame
 import sys
 import time
+import pyttsx3
 
 # -------------------------------------------------------------
 # GLOBAL MODE FLAG
@@ -299,15 +300,90 @@ def assembly_menu():
 
 
 # -------------------------------------------------------------
-# ANNOUNCEMENT MENU (placeholder)
+# TEXT-TO-SPEECH (ANNOUNCEMENTS) - NAVTEJ'S MODULE (SAFE VERSION)
 # -------------------------------------------------------------
+
+def speak_with_voice(text: str, voice_index: int, rate: int):
+    """Generic helper to speak text with a given voice index and rate."""
+    try:
+        engine = pyttsx3.init()
+        voices = engine.getProperty("voices")
+
+        if not voices:
+            print("No TTS voices found.")
+            return
+
+        if voice_index < 0 or voice_index >= len(voices):
+            voice_index = 0  # fallback
+
+        engine.setProperty("voice", voices[voice_index].id)
+        engine.setProperty("rate", rate)
+        engine.say(text)
+        engine.runAndWait()
+        engine.stop()
+    except Exception as e:
+        print("TTS error:", e)
+
+
+def speak_robert(text: str):
+    """Voice 1 – Robert (usually male default)."""
+    # Usually first voice
+    speak_with_voice(text, voice_index=0, rate=165)
+
+
+def speak_zara(text: str):
+    """Voice 2 – Zara (usually female default)."""
+    # Use second voice if available, else fallback to first
+    speak_with_voice(text, voice_index=1, rate=185)
+
+
+def speak_orion(text: str):
+    """Voice 3 – Orion – deeper & slower."""
+    # Reuse first voice but slower, sounds more serious
+    speak_with_voice(text, voice_index=0, rate=140)
+
+
+
 
 def announcement_menu():
     set_mode("ANNOUNCEMENT")
-    print("\n=== ANNOUNCEMENT MODE ===")
-    print("Feature coming soon...")
-    input("Press Enter to go back.")
-    set_mode("IDLE")
+
+    while True:
+        print("\n========== ANNOUNCEMENT MODE ==========")
+        print("Choose a voice for the announcement:")
+        print("1. Robert  – Formal male voice")
+        print("2. Zara    – Energetic female voice")
+        print("3. Orion   – Deep slower voice")
+        print("0. Back to Main Menu")
+        choice = input("Choose: ").strip()
+
+        if choice == "0":
+            set_mode("IDLE")
+            return
+
+        if choice not in ("1", "2", "3"):
+            print("Invalid choice.")
+            continue
+
+        print("\nType the message to be announced.")
+        print("(Leave empty and press Enter to cancel.)")
+        msg = input("Message: ").strip()
+
+        if not msg:
+            print("No message entered. Cancelled.")
+            continue
+
+        print("\nAnnouncing...")
+        try:
+            if choice == "1":
+                speak_robert(msg)
+            elif choice == "2":
+                speak_zara(msg)
+            elif choice == "3":
+                speak_orion(msg)
+        except Exception as e:
+            print("Error while speaking:", e)
+
 
 
 # -------------------------------------------------------------
